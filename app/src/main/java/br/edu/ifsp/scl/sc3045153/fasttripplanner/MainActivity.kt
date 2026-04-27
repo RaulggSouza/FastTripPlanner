@@ -66,6 +66,18 @@ fun TripData(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .padding(5.dp)
         )
+
+        var days by rememberSaveable { mutableStateOf("") }
+
+        OutlinedTextField(
+            value = days,
+            onValueChange = { newValue -> days = newValue },
+            label = { Text("Número de dias") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+        )
     }
 }
 
