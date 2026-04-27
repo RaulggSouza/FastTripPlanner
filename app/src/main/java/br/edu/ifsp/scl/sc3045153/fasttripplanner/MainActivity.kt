@@ -47,16 +47,34 @@ fun TripData(modifier: Modifier = Modifier) {
         Text(text = "Dados da viagem", fontWeight = FontWeight.Bold, fontSize = 30.sp)
 
         var destination by rememberSaveable { mutableStateOf("") }
+        var destinationError by rememberSaveable { mutableStateOf<String?>(null) }
 
         OutlinedTextField(
             value = destination,
-            onValueChange = { newValue -> destination = newValue},
+            onValueChange = { newValue ->
+                destination = newValue
+                destinationError = validateDestination(newValue)
+            },
             label = { Text("Destino") },
+            isError = destinationError != null,
+            supportingText = {
+                destinationError?.let {
+                    Text(it)
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
         )
     }
+}
+
+private fun validateDestination(value: String): String? {
+    if (value.isBlank()) {
+        return "Destination é obrigatório"
+    }
+
+    return null
 }
 
 @Preview(showBackground = true)
