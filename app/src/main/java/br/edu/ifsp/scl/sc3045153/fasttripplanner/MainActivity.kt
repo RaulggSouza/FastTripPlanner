@@ -88,12 +88,20 @@ fun TripData(modifier: Modifier = Modifier) {
         )
 
         var budget by rememberSaveable { mutableStateOf("") }
+        var budgetError by rememberSaveable { mutableStateOf<String?>(null) }
 
         OutlinedTextField(
             value = budget,
-            onValueChange = { newValue -> budget = newValue },
+            onValueChange = { newValue ->
+                budget = newValue
+                budgetError = validateBudget(newValue)
+            },
             label = { Text("Orçamento diário") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            isError = budgetError != null,
+            supportingText = {
+                budgetError?.let { Text(it) }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
@@ -123,6 +131,22 @@ private fun validateDays(value: String): String? {
 
     if (days <= 0) {
         return "Quantidade de dias deve ser maior que zero"
+    }
+
+    return null
+}
+
+private fun validateBudget(value: String): String? {
+    if (value.isBlank()) {
+        return "Orçamento é obrigatório"
+    }
+
+    val budget = value
+        .replace(',', '.')
+        .toDoubleOrNull() ?: return "Digite um orçamento válido"
+
+    if (budget <= 0.0) {
+        return "Orçamento deve ser maior que zero"
     }
 
     return null
