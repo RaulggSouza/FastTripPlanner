@@ -72,7 +72,10 @@ fun TripData(modifier: Modifier = Modifier) {
 
         OutlinedTextField(
             value = days,
-            onValueChange = { newValue -> days = newValue },
+            onValueChange = { newValue ->
+                days = newValue
+                daysError = validateDays(newValue)
+            },
             label = { Text("Número de dias") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             isError = daysError != null,
