@@ -86,6 +86,19 @@ fun TripData(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .padding(5.dp)
         )
+
+        var budget by rememberSaveable { mutableStateOf("") }
+
+        OutlinedTextField(
+            value = budget,
+            onValueChange = { newValue -> budget = newValue },
+            label = { Text("Orçamento diário") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+        )
+
     }
 }
 
