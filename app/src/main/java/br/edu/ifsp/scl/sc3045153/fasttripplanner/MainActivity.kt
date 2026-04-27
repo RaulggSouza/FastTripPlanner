@@ -68,12 +68,17 @@ fun TripData(modifier: Modifier = Modifier) {
         )
 
         var days by rememberSaveable { mutableStateOf("") }
+        var daysError by rememberSaveable { mutableStateOf<String?>(null) }
 
         OutlinedTextField(
             value = days,
             onValueChange = { newValue -> days = newValue },
             label = { Text("Número de dias") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isError = daysError != null,
+            supportingText = {
+                daysError?.let { Text(it) }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
@@ -84,6 +89,24 @@ fun TripData(modifier: Modifier = Modifier) {
 private fun validateDestination(value: String): String? {
     if (value.isBlank()) {
         return "Destination é obrigatório"
+    }
+
+    return null
+}
+
+private fun validateDays(value: String): String? {
+    if (value.isBlank()) {
+        return "Quantidade de dias é obrigatório"
+    }
+
+    if (!value.isDigitsOnly()) {
+        return "Quantidade de dias deve ser númerico"
+    }
+
+    val days = value.toIntOrNull() ?: return "Digite uma quantidade de dias válida"
+
+    if (days <= 0) {
+        return "Quantidade de dias deve ser maior que zero"
     }
 
     return null
