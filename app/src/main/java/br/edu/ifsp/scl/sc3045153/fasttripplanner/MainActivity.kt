@@ -147,7 +147,7 @@ fun TripData(modifier: Modifier = Modifier) {
                 daysNumber != null &&
                 budgetNumber != null
             ) {
-                val intent = Intent(context, TripOptions::class.java). apply {
+                val intent = Intent(context, TripOptionsActivity::class.java). apply {
                     putExtra("EXTRA_DESTINATION", destination.trim())
                     putExtra("EXTRA_DAYS", daysNumber)
                     putExtra("EXTRA_BUDGET", budgetNumber)

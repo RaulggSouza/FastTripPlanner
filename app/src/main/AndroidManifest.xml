@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TripOptions"
+            android:name=".TripOptionsActivity"
             android:exported="false"/>
     </application>
 
