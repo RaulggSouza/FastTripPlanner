@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -84,6 +85,70 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
         }
 
         Spacer(modifier = modifier.height(20.dp))
+
+        //Variável para Alimentação mantida ao girar tela
+        var feedingIncluded by rememberSaveable { mutableStateOf(false) }
+        //Variável para transporte mantida ao girar tela
+        var transportIncluded by rememberSaveable { mutableStateOf(false) }
+        //Variável para passeios mantida ao girar tela
+        var tourGuideIncluded by rememberSaveable { mutableStateOf(false) }
+
+        Column(
+            modifier = modifier.width(250.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "Escolha os serviços",
+                fontWeight = FontWeight.Bold,
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center,
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                //Checkbox para alimentação
+                Checkbox(
+                    checked = feedingIncluded,
+                    onCheckedChange = { checked ->
+                        feedingIncluded = checked
+                    }
+                )
+
+                Text("Alimentação inclusa", fontSize = 20.sp)
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                //Checkbox para transporte
+                Checkbox(
+                    checked = transportIncluded,
+                    onCheckedChange = { checked ->
+                        transportIncluded = checked
+                    }
+                )
+
+                Text("Transporte incluso", fontSize = 20.sp)
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                //Checkbox para passeios
+                Checkbox(
+                    checked = tourGuideIncluded,
+                    onCheckedChange = { checked ->
+                        tourGuideIncluded = checked
+                    }
+                )
+
+                Text("Passeios inclusos", fontSize = 20.sp)
+            }
+        }
     }
 }
 
