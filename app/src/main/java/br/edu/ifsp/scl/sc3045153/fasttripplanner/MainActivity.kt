@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FastTripPlannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TripData(modifier = Modifier.padding(innerPadding))
+                    TripDataScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripData(modifier: Modifier = Modifier) {
+fun TripDataScreen(modifier: Modifier = Modifier) {
     //Contexto da Intent
     val context = LocalContext.current
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -212,8 +212,8 @@ private fun validateBudget(value: String): String? {
 
 @Preview(showBackground = true)
 @Composable
-private fun TripDataPrev() {
+private fun TripDataScreenPrev() {
     FastTripPlannerTheme {
-        TripData()
+        TripDataScreen()
     }
 }
