@@ -59,28 +59,33 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
         //Cria spacer para melhor visualização
         Spacer(modifier = modifier.height(20.dp))
 
-        Text(
-            "Escolha o tipo de hospedagem",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center,
-        )
+        Column(
+            modifier = modifier.width(250.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "Escolha o tipo de hospedagem",
+                fontWeight = FontWeight.Bold,
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center,
+            )
 
-        //Itera por cada item do enum
-        HostingType.entries.forEach { hostingType ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.width(200.dp)
-            ) {
-                //Cria um radio button para cada elemento do enum
-                RadioButton(
-                    selected = selectedHostingType == hostingType,
-                    onClick = {
-                        selectedHostingType = hostingType
-                    }
-                )
+            //Itera por cada item do enum
+            HostingType.entries.forEach { hostingType ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier.fillMaxWidth()
+                ) {
+                    //Cria um radio button para cada elemento do enum
+                    RadioButton(
+                        selected = selectedHostingType == hostingType,
+                        onClick = {
+                            selectedHostingType = hostingType
+                        }
+                    )
 
-                Text(hostingType.label, fontSize = 20.sp)
+                    Text(hostingType.label, fontSize = 20.sp)
+                }
             }
         }
 
