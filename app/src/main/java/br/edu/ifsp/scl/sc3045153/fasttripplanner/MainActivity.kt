@@ -46,20 +46,26 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TripData(modifier: Modifier = Modifier) {
+    //Contexto da Intent
     val context = LocalContext.current
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Dados da viagem", fontWeight = FontWeight.Bold, fontSize = 30.sp)
 
+        //Valor da destination, marcado para não mudar ao virar a tela
         var destination by rememberSaveable { mutableStateOf("") }
+        //Erro de destination
         var destinationError by rememberSaveable { mutableStateOf<String?>(null) }
 
+        //Campo de texto para destination
         OutlinedTextField(
             value = destination,
             onValueChange = { newValue ->
                 destination = newValue
+                //Chama função para validação de destination
                 destinationError = validateDestination(newValue)
             },
             label = { Text("Destino") },
+            //Adiciona erro no campo de texto dependendo da validação
             isError = destinationError != null,
             supportingText = {
                 destinationError?.let {
@@ -71,17 +77,23 @@ fun TripData(modifier: Modifier = Modifier) {
                 .padding(5.dp)
         )
 
+        //Valor de days, marcado para não mudar ao virar a tela
         var days by rememberSaveable { mutableStateOf("") }
+        //Erro de days
         var daysError by rememberSaveable { mutableStateOf<String?>(null) }
 
+        //Campo de texto para days
         OutlinedTextField(
             value = days,
             onValueChange = { newValue ->
                 days = newValue
+                //Chama função para validação de days
                 daysError = validateDays(newValue)
             },
             label = { Text("Número de dias") },
+            //Modifica keyboard para numérico
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            //Adiciona erro no campo de texto dependendo da validação
             isError = daysError != null,
             supportingText = {
                 daysError?.let { Text(it) }
@@ -91,17 +103,23 @@ fun TripData(modifier: Modifier = Modifier) {
                 .padding(5.dp)
         )
 
+        //Valor de budget, marcado para não mudar ao virar a tela
         var budget by rememberSaveable { mutableStateOf("") }
+        //Erro de budget
         var budgetError by rememberSaveable { mutableStateOf<String?>(null) }
 
+        //Campo de texto para budget
         OutlinedTextField(
             value = budget,
             onValueChange = { newValue ->
                 budget = newValue
+                //Chama função para validação de budget
                 budgetError = validateBudget(newValue)
             },
             label = { Text("Orçamento diário") },
+            //Modifica keyboard para decimal
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            //Adiciona erro no campo de texto dependendo da validação
             isError = budgetError != null,
             supportingText = {
                 budgetError?.let { Text(it) }
@@ -143,24 +161,29 @@ fun TripData(modifier: Modifier = Modifier) {
 }
 
 private fun validateDestination(value: String): String? {
+    //Valida se destination é vazio
     if (value.isBlank()) {
-        return "Destination é obrigatório"
+        return "Destino é obrigatório"
     }
 
     return null
 }
 
 private fun validateDays(value: String): String? {
+    //Verifica se days é vazio
     if (value.isBlank()) {
         return "Quantidade de dias é obrigatório"
     }
 
+    //Verifica se days é formado somente por dígitos
     if (!value.isDigitsOnly()) {
         return "Quantidade de dias deve ser númerico"
     }
 
+    //Transforma days para int para validação, se for null mostra erro de dias inválidos
     val days = value.toIntOrNull() ?: return "Digite uma quantidade de dias válida"
 
+    //Verifica se dias é menor que 0
     if (days <= 0) {
         return "Quantidade de dias deve ser maior que zero"
     }
@@ -169,14 +192,17 @@ private fun validateDays(value: String): String? {
 }
 
 private fun validateBudget(value: String): String? {
+    //Verifica se days é vazio
     if (value.isBlank()) {
         return "Orçamento é obrigatório"
     }
 
+    //Troca , por . e transforma para double para validação, se for null mostra erro de budget inválido
     val budget = value
         .replace(',', '.')
         .toDoubleOrNull() ?: return "Digite um orçamento válido"
 
+    //Verifica se dias é menor que 0;0
     if (budget <= 0.0) {
         return "Orçamento deve ser maior que zero"
     }
