@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
@@ -25,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,10 +60,10 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //Cria spacer para melhor visualização
-        Spacer(modifier = modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = modifier.width(250.dp),
+            modifier = Modifier.width(250.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -68,20 +71,28 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 10.dp)
             )
 
             //Itera por cada item do enum
             HostingType.entries.forEach { hostingType ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = selectedHostingType == hostingType,
+                            onClick = {
+                                selectedHostingType = hostingType
+                            },
+                            role = Role.RadioButton
+                        )
                 ) {
                     //Cria um radio button para cada elemento do enum
                     RadioButton(
                         selected = selectedHostingType == hostingType,
-                        onClick = {
-                            selectedHostingType = hostingType
-                        }
+                        onClick = null,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
                     )
 
                     Text(hostingType.label, fontSize = 20.sp)
@@ -99,7 +110,7 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
         var tourGuideIncluded by rememberSaveable { mutableStateOf(false) }
 
         Column(
-            modifier = modifier.width(250.dp),
+            modifier = Modifier.width(250.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -107,18 +118,24 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 10.dp)
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().toggleable(
+                    value = feedingIncluded,
+                    onValueChange = { checked ->
+                        feedingIncluded = checked
+                    },
+                    role = Role.Checkbox
+                ).padding(vertical = 10.dp)
             ) {
                 //Checkbox para alimentação
                 Checkbox(
                     checked = feedingIncluded,
-                    onCheckedChange = { checked ->
-                        feedingIncluded = checked
-                    }
+                    onCheckedChange = null,
+                    Modifier.padding(horizontal = 10.dp)
                 )
 
                 Text("Alimentação inclusa", fontSize = 20.sp)
@@ -126,14 +143,19 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().toggleable(
+                    value = transportIncluded,
+                    onValueChange = { checked ->
+                        transportIncluded = checked
+                    },
+                    role = Role.Checkbox
+                ).padding(vertical = 10.dp)
             ) {
                 //Checkbox para transporte
                 Checkbox(
                     checked = transportIncluded,
-                    onCheckedChange = { checked ->
-                        transportIncluded = checked
-                    }
+                    onCheckedChange = null,
+                    Modifier.padding(horizontal = 10.dp)
                 )
 
                 Text("Transporte incluso", fontSize = 20.sp)
@@ -141,14 +163,19 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().toggleable(
+                    value = tourGuideIncluded,
+                    onValueChange = { checked ->
+                        tourGuideIncluded = checked
+                    },
+                    role = Role.Checkbox
+                ).padding(vertical = 10.dp)
             ) {
                 //Checkbox para passeios
                 Checkbox(
                     checked = tourGuideIncluded,
-                    onCheckedChange = { checked ->
-                        tourGuideIncluded = checked
-                    }
+                    onCheckedChange = null,
+                    Modifier.padding(horizontal = 10.dp)
                 )
 
                 Text("Passeios inclusos", fontSize = 20.sp)
