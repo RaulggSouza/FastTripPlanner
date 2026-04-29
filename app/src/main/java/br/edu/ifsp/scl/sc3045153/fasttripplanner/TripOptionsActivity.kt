@@ -81,6 +81,7 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .selectable(
+                            //Faz texto do radio button ser clicável
                             selected = selectedHostingType == hostingType,
                             onClick = {
                                 selectedHostingType = hostingType
@@ -124,6 +125,7 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth().toggleable(
+                    //Faz texto do checkbox ser clicável
                     value = feedingIncluded,
                     onValueChange = { checked ->
                         feedingIncluded = checked
@@ -144,6 +146,7 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth().toggleable(
+                    //Faz texto do checkbox ser clicável
                     value = transportIncluded,
                     onValueChange = { checked ->
                         transportIncluded = checked
@@ -164,6 +167,7 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth().toggleable(
+                    //Faz texto do checkbox ser clicável
                     value = tourGuideIncluded,
                     onValueChange = { checked ->
                         tourGuideIncluded = checked
