@@ -49,7 +49,12 @@ fun TripDataScreen(modifier: Modifier = Modifier) {
     //Contexto da Intent
     val context = LocalContext.current
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Dados da viagem", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+        Text(
+            text = "Dados da viagem",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(vertical = 10.dp)
+        )
 
         //Valor da destination, marcado para não mudar ao virar a tela
         var destination by rememberSaveable { mutableStateOf("") }
@@ -140,14 +145,14 @@ fun TripDataScreen(modifier: Modifier = Modifier) {
             val budgetNumber = budget.replace(",", ".").toDoubleOrNull()
 
             //Se tudo estiver certo, chama a intent
-            if(
+            if (
                 destinationError == null &&
                 daysError == null &&
                 budgetError == null &&
                 daysNumber != null &&
                 budgetNumber != null
             ) {
-                val intent = Intent(context, TripOptionsActivity::class.java). apply {
+                val intent = Intent(context, TripOptionsActivity::class.java).apply {
                     putExtra("EXTRA_DESTINATION", destination.trim())
                     putExtra("EXTRA_DAYS", daysNumber)
                     putExtra("EXTRA_BUDGET", budgetNumber)
@@ -155,7 +160,7 @@ fun TripDataScreen(modifier: Modifier = Modifier) {
                 context.startActivity(intent)
             }
         }, modifier = Modifier.padding(5.dp)) {
-                Text("Avançar")
+            Text("Avançar")
         }
     }
 }
@@ -164,6 +169,16 @@ private fun validateDestination(value: String): String? {
     //Valida se destination é vazio
     if (value.isBlank()) {
         return "Destino é obrigatório"
+    }
+
+    //Valida se destination tem apenas dígitos
+    if (value.isDigitsOnly()) {
+        return "Destino não pode ter somentes números"
+    }
+
+    //Valida se destination tem ao menos uma letra
+    if(!value.any {it.isLetter()}) {
+        return "Destino deve conter pelo menos uma letra"
     }
 
     return null
