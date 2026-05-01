@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,7 +44,12 @@ class TripOptionsActivity : ComponentActivity() {
         setContent {
             FastTripPlannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TripOptionsScreen(modifier = Modifier.padding(innerPadding))
+                    TripOptionsScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        onBackClick = {
+                            finish()
+                        }
+                    )
                 }
             }
         }
@@ -50,7 +57,7 @@ class TripOptionsActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripOptionsScreen(modifier: Modifier = Modifier) {
+fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
     //Tipo de acomadações marcado para não mudar quando a tela girar
     var selectedHostingType by rememberSaveable { mutableStateOf<HostingType?>(null) }
 
@@ -99,6 +106,13 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
                     Text(hostingType.label, fontSize = 20.sp)
                 }
             }
+            if (selectedHostingType == null) {
+                Text(
+                    text = "Selecione sua hospedagem",
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp
+                )
+            }
         }
 
         Spacer(modifier = modifier.height(20.dp))
@@ -124,14 +138,17 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().toggleable(
-                    //Faz texto do checkbox ser clicável
-                    value = feedingIncluded,
-                    onValueChange = { checked ->
-                        feedingIncluded = checked
-                    },
-                    role = Role.Checkbox
-                ).padding(vertical = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .toggleable(
+                        //Faz texto do checkbox ser clicável
+                        value = feedingIncluded,
+                        onValueChange = { checked ->
+                            feedingIncluded = checked
+                        },
+                        role = Role.Checkbox
+                    )
+                    .padding(vertical = 10.dp)
             ) {
                 //Checkbox para alimentação
                 Checkbox(
@@ -145,14 +162,17 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().toggleable(
-                    //Faz texto do checkbox ser clicável
-                    value = transportIncluded,
-                    onValueChange = { checked ->
-                        transportIncluded = checked
-                    },
-                    role = Role.Checkbox
-                ).padding(vertical = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .toggleable(
+                        //Faz texto do checkbox ser clicável
+                        value = transportIncluded,
+                        onValueChange = { checked ->
+                            transportIncluded = checked
+                        },
+                        role = Role.Checkbox
+                    )
+                    .padding(vertical = 10.dp)
             ) {
                 //Checkbox para transporte
                 Checkbox(
@@ -166,14 +186,17 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().toggleable(
-                    //Faz texto do checkbox ser clicável
-                    value = tourGuideIncluded,
-                    onValueChange = { checked ->
-                        tourGuideIncluded = checked
-                    },
-                    role = Role.Checkbox
-                ).padding(vertical = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .toggleable(
+                        //Faz texto do checkbox ser clicável
+                        value = tourGuideIncluded,
+                        onValueChange = { checked ->
+                            tourGuideIncluded = checked
+                        },
+                        role = Role.Checkbox
+                    )
+                    .padding(vertical = 10.dp)
             ) {
                 //Checkbox para passeios
                 Checkbox(
@@ -185,6 +208,14 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
                 Text("Passeios inclusos", fontSize = 20.sp)
             }
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Button(onClick = onBackClick) {
+                Text("Voltar", fontSize = 20.sp)
+            }
+        }
     }
 }
 
@@ -192,6 +223,6 @@ fun TripOptionsScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun TripOptionsScreenPrev() {
     FastTripPlannerTheme {
-        TripOptionsScreen()
+        TripOptionsScreen(onBackClick = {})
     }
 }
