@@ -25,6 +25,9 @@
         <activity
             android:name=".TripOptionsActivity"
             android:exported="false"/>
+        <activity
+            android:name=".TripSummaryActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
