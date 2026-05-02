@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import br.edu.ifsp.scl.sc3045153.fasttripplanner.ui.theme.FastTripPlannerTheme
 
-class MainActivity : ComponentActivity() {
+class TripDataActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

@@ -72,7 +72,7 @@ class TripSummaryActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding),
                         {
                             val intent =
-                                Intent(this@TripSummaryActivity, MainActivity::class.java).apply {
+                                Intent(this@TripSummaryActivity, TripDataActivity::class.java).apply {
                                     flags =
                                         Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                                 }
