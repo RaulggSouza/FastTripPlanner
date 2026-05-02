@@ -119,7 +119,7 @@ fun TripSummaryScreen(
             .padding(10.dp)) {
             Text("Destino: ${trip.destination}")
             Text("Dias: ${trip.days}")
-            Text("Orçamento: R$${trip.budget}")
+            Text("Orçamento: R$${"%.2f".format(trip.budget)}")
             Text("Hospedagem: ${trip.hostingType.label}")
             Text("Alimentação inclusa: ${if (trip.feedingIncluded) "Sim" else "Não"}")
             Text("Transporte incluso: ${if (trip.transportIncluded) "Sim" else "Não"}")
@@ -135,7 +135,7 @@ fun TripSummaryScreen(
             fontSize = 30.sp,
             modifier = Modifier.padding(vertical = 10.dp)
         )
-        Text("R$${totalTripCost}", fontSize = 20.sp, modifier = Modifier.padding(10.dp))
+        Text("R$${"%.2f".format(totalTripCost)}", fontSize = 20.sp, modifier = Modifier.padding(10.dp))
 
         Button(onClick = onRestartClick) {
             Text("Reiniciar")
