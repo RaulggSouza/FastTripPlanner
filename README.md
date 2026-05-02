@@ -4,6 +4,9 @@ Aplicativo Android desenvolvido em Kotlin com Jetpack Compose para planejamento 
 
 O FastTripPlanner permite que o usuário informe os dados básicos de uma viagem, selecione opções de hospedagem e serviços adicionais, e visualize um resumo final com o cálculo do custo total estimado.
 
+## Vídeo
+Link para o vídeo do aplicativo: https://youtube.com/shorts/Ivc8rNKgWgQ
+
 ## Objetivo
 
 O objetivo do projeto é aplicar conceitos fundamentais de desenvolvimento Android, incluindo múltiplas telas, navegação com Intents explícitas, passagem de dados entre Activities, gerenciamento de estado, validação de campos e uso de componentes básicos de interface.
