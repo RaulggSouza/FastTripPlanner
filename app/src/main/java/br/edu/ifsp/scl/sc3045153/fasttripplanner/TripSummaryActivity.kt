@@ -8,20 +8,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,10 +31,6 @@ class TripSummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
 
         val destination = intent.getStringExtra("EXTRA_DESTINATION") ?: ""
         val days = intent.getIntExtra("EXTRA_DAYS", 0)
@@ -75,6 +70,16 @@ class TripSummaryActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TripSummaryScreen(
                         modifier = Modifier.padding(innerPadding),
+                        {
+                            val intent =
+                                Intent(this@TripSummaryActivity, MainActivity::class.java).apply {
+                                    flags =
+                                        Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                }
+
+                            startActivity(intent)
+                            finish()
+                        },
                         Trip(
                             destination,
                             days,
@@ -93,7 +98,12 @@ class TripSummaryActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip, totalTripCost: Double) {
+fun TripSummaryScreen(
+    modifier: Modifier = Modifier,
+    onRestartClick: () -> Unit,
+    trip: Trip,
+    totalTripCost: Double
+) {
     Column(
         modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -103,24 +113,33 @@ fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip, totalTripCost: 
             fontSize = 30.sp,
             modifier = Modifier.padding(vertical = 10.dp)
         )
-        Column (modifier = Modifier.border(width = 1.dp, color = Color.Black).padding(10.dp)){
+        //Monta os dados da viagem
+        Column(modifier = Modifier
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.outline)
+            .padding(10.dp)) {
             Text("Destino: ${trip.destination}")
             Text("Dias: ${trip.days}")
             Text("Orçamento: R$${trip.budget}")
             Text("Hospedagem: ${trip.hostingType.label}")
-            Text("Alimentação inclusa: ${ if (trip.feedingIncluded) "Sim" else "Não"}")
+            Text("Alimentação inclusa: ${if (trip.feedingIncluded) "Sim" else "Não"}")
             Text("Transporte incluso: ${if (trip.transportIncluded) "Sim" else "Não"}")
             Text("Passeios inclusos: ${if (trip.tourGuideIncluded) "Sim" else "Não"}")
         }
+
         Spacer(modifier = Modifier.height(20.dp))
 
+        //Mostra total da viagem
         Text(
             text = "Total da viagem",
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             modifier = Modifier.padding(vertical = 10.dp)
         )
-        Text("R$${totalTripCost}", fontSize = 20.sp, modifier = modifier.padding(10.dp))
+        Text("R$${totalTripCost}", fontSize = 20.sp, modifier = Modifier.padding(10.dp))
+
+        Button(onClick = onRestartClick) {
+            Text("Reiniciar")
+        }
     }
 
 }
@@ -129,6 +148,7 @@ fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip, totalTripCost: 
 @Composable
 private fun TripSummaryPreview() {
     TripSummaryScreen(
+        onRestartClick = {},
         trip =
             Trip(
                 "SP",
