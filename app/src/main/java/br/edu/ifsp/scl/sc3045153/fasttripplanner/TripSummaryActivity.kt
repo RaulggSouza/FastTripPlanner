@@ -10,8 +10,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -79,7 +83,8 @@ class TripSummaryActivity : ComponentActivity() {
                             feedingIncluded,
                             transportIncluded,
                             tourGuideIncluded
-                        )
+                        ),
+                        totalTripCost
                     )
                 }
             }
@@ -88,9 +93,9 @@ class TripSummaryActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip) {
+fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip, totalTripCost: Double) {
     Column(
-        modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Dados da viagem",
@@ -107,7 +112,17 @@ fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip) {
             Text("Transporte incluso: ${if (trip.transportIncluded) "Sim" else "Não"}")
             Text("Passeios inclusos: ${if (trip.tourGuideIncluded) "Sim" else "Não"}")
         }
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = "Total da viagem",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(vertical = 10.dp)
+        )
+        Text("R$${totalTripCost}", fontSize = 20.sp, modifier = modifier.padding(10.dp))
     }
+
 }
 
 @Preview(showBackground = true)
@@ -123,6 +138,7 @@ private fun TripSummaryPreview() {
                 feedingIncluded = false,
                 transportIncluded = false,
                 tourGuideIncluded = false
-            )
+            ),
+        totalTripCost = 100.0
     )
 }

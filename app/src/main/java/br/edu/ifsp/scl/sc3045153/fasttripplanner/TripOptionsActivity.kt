@@ -81,7 +81,7 @@ fun TripOptionsScreen(
 
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //Cria spacer para melhor visualização
