@@ -1,5 +1,6 @@
 package br.edu.ifsp.scl.sc3045153.fasttripplanner
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +42,12 @@ class TripOptionsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val destination = intent.getStringExtra("EXTRA_DESTINATION") ?: ""
+        val days = intent.getIntExtra("EXTRA_DAYS", 0)
+        val budget = intent.getDoubleExtra("EXTRA_BUDGET", 0.0)
+
+
         setContent {
             FastTripPlannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -48,7 +55,8 @@ class TripOptionsActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding),
                         onBackClick = {
                             finish()
-                        }
+                        },
+                        Trip(destination, days, budget)
                     )
                 }
             }
@@ -57,7 +65,8 @@ class TripOptionsActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
+fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit, trip: Trip) {
+    val context = LocalContext.current
     //Tipo de acomadações marcado para não mudar quando a tela girar
     var selectedHostingType by rememberSaveable { mutableStateOf<HostingType?>(null) }
 
@@ -212,8 +221,25 @@ fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(onClick = onBackClick) {
+            Button(onClick = onBackClick, modifier = Modifier.padding(horizontal = 10.dp)) {
                 Text("Voltar", fontSize = 20.sp)
+            }
+
+            Button(onClick = {
+                //Verifica se uma hospedagem foi selecionada
+                selectedHostingType?.let {
+                    val intent = Intent(context, TripSummaryActivity::class.java).apply {
+                        putExtra("EXTRA_TRIP", trip)
+                        putExtra("EXTRA_HOSTING", it)
+                        putExtra("EXTRA_FEEDING", feedingIncluded)
+                        putExtra("EXTRA_TRANSPORT", transportIncluded)
+                        putExtra("EXTRA_TOUR", tourGuideIncluded)
+                    }
+
+                    context.startActivity(intent)
+                }
+            }, Modifier.padding(horizontal = 10.dp)) {
+                Text("Calcular", fontSize = 20.sp)
             }
         }
     }
@@ -223,6 +249,6 @@ fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
 @Composable
 private fun TripOptionsScreenPrev() {
     FastTripPlannerTheme {
-        TripOptionsScreen(onBackClick = {})
+        TripOptionsScreen(onBackClick = {}, trip = Trip("SP", 5, 0.0))
     }
 }
