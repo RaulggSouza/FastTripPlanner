@@ -7,12 +7,21 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.edu.ifsp.scl.sc3045153.fasttripplanner.ui.theme.FastTripPlannerTheme
 
 class TripSummaryActivity : ComponentActivity() {
@@ -80,7 +89,25 @@ class TripSummaryActivity : ComponentActivity() {
 
 @Composable
 fun TripSummaryScreen(modifier: Modifier = Modifier, trip: Trip) {
-
+    Column(
+        modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Dados da viagem",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(vertical = 10.dp)
+        )
+        Column (modifier = Modifier.border(width = 1.dp, color = Color.Black).padding(10.dp)){
+            Text("Destino: ${trip.destination}")
+            Text("Dias: ${trip.days}")
+            Text("Orçamento: R$${trip.budget}")
+            Text("Hospedagem: ${trip.hostingType.label}")
+            Text("Alimentação inclusa: ${ if (trip.feedingIncluded) "Sim" else "Não"}")
+            Text("Transporte incluso: ${if (trip.transportIncluded) "Sim" else "Não"}")
+            Text("Passeios inclusos: ${if (trip.tourGuideIncluded) "Sim" else "Não"}")
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -89,7 +116,7 @@ private fun TripSummaryPreview() {
     TripSummaryScreen(
         trip =
             Trip(
-                "",
+                "SP",
                 1,
                 1.0,
                 HostingType.ECONOMIC,
