@@ -47,6 +47,8 @@ class TripOptionsActivity : ComponentActivity() {
         val days = intent.getIntExtra("EXTRA_DAYS", 0)
         val budget = intent.getDoubleExtra("EXTRA_BUDGET", 0.0)
 
+        //Calcula preço atual da viagem
+        val baseTripCost = days * budget
 
         setContent {
             FastTripPlannerTheme {
@@ -56,16 +58,23 @@ class TripOptionsActivity : ComponentActivity() {
                         onBackClick = {
                             finish()
                         },
-                        Trip(destination, days, budget)
+                        baseTripCost,
+                        destination
                     )
                 }
             }
+
         }
     }
 }
 
 @Composable
-fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit, trip: Trip) {
+fun TripOptionsScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    baseTripCost: Double,
+    destination: String
+) {
     val context = LocalContext.current
     //Tipo de acomadações marcado para não mudar quando a tela girar
     var selectedHostingType by rememberSaveable { mutableStateOf<HostingType?>(null) }
@@ -229,7 +238,8 @@ fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit, tr
                 //Verifica se uma hospedagem foi selecionada
                 selectedHostingType?.let {
                     val intent = Intent(context, TripSummaryActivity::class.java).apply {
-                        putExtra("EXTRA_TRIP", trip)
+                        putExtra("EXTRA_BASE_COST", baseTripCost)
+                        putExtra("EXTRA_DESTINATION", destination)
                         putExtra("EXTRA_HOSTING", it)
                         putExtra("EXTRA_FEEDING", feedingIncluded)
                         putExtra("EXTRA_TRANSPORT", transportIncluded)
@@ -249,6 +259,6 @@ fun TripOptionsScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit, tr
 @Composable
 private fun TripOptionsScreenPrev() {
     FastTripPlannerTheme {
-        TripOptionsScreen(onBackClick = {}, trip = Trip("SP", 5, 0.0))
+        TripOptionsScreen(onBackClick = {}, baseTripCost = 11.0, destination = "")
     }
 }
