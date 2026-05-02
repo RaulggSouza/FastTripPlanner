@@ -43,12 +43,10 @@ class TripOptionsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        //Recupera valores passados pela intent
         val destination = intent.getStringExtra("EXTRA_DESTINATION") ?: ""
         val days = intent.getIntExtra("EXTRA_DAYS", 0)
         val budget = intent.getDoubleExtra("EXTRA_BUDGET", 0.0)
-
-        //Calcula preço atual da viagem
-        val baseTripCost = days * budget
 
         setContent {
             FastTripPlannerTheme {
@@ -58,7 +56,8 @@ class TripOptionsActivity : ComponentActivity() {
                         onBackClick = {
                             finish()
                         },
-                        baseTripCost,
+                        budget,
+                        days,
                         destination
                     )
                 }
@@ -72,7 +71,8 @@ class TripOptionsActivity : ComponentActivity() {
 fun TripOptionsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    baseTripCost: Double,
+    budget: Double,
+    days: Int,
     destination: String
 ) {
     val context = LocalContext.current
@@ -238,9 +238,10 @@ fun TripOptionsScreen(
                 //Verifica se uma hospedagem foi selecionada
                 selectedHostingType?.let {
                     val intent = Intent(context, TripSummaryActivity::class.java).apply {
-                        putExtra("EXTRA_BASE_COST", baseTripCost)
+                        putExtra("EXTRA_DAYS", days)
+                        putExtra("EXTRA_BUDGET", budget)
                         putExtra("EXTRA_DESTINATION", destination)
-                        putExtra("EXTRA_HOSTING", it)
+                        putExtra("EXTRA_HOSTING", it.multiplier)
                         putExtra("EXTRA_FEEDING", feedingIncluded)
                         putExtra("EXTRA_TRANSPORT", transportIncluded)
                         putExtra("EXTRA_TOUR", tourGuideIncluded)
@@ -259,6 +260,6 @@ fun TripOptionsScreen(
 @Composable
 private fun TripOptionsScreenPrev() {
     FastTripPlannerTheme {
-        TripOptionsScreen(onBackClick = {}, baseTripCost = 11.0, destination = "")
+        TripOptionsScreen(onBackClick = {}, budget = 11.0, days = 1, destination = "")
     }
 }
