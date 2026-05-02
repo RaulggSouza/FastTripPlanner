@@ -241,7 +241,7 @@ fun TripOptionsScreen(
                         putExtra("EXTRA_DAYS", days)
                         putExtra("EXTRA_BUDGET", budget)
                         putExtra("EXTRA_DESTINATION", destination)
-                        putExtra("EXTRA_HOSTING", it.multiplier)
+                        putExtra("EXTRA_HOSTING", it)
                         putExtra("EXTRA_FEEDING", feedingIncluded)
                         putExtra("EXTRA_TRANSPORT", transportIncluded)
                         putExtra("EXTRA_TOUR", tourGuideIncluded)
