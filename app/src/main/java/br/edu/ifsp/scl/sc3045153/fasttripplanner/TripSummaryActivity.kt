@@ -36,7 +36,8 @@ class TripSummaryActivity : ComponentActivity() {
         val days = intent.getIntExtra("EXTRA_DAYS", 0)
         val budget = intent.getDoubleExtra("EXTRA_BUDGET", 0.0)
 
-        //Verificação para pegar serialized, eu não conesegui fazer o parcelized funcionar
+        //Verificação para utilizar serialized, eu não consegui fazer o parcelized funcionar
+        //Verifica se a versão é acima da tiramisu pra usar a maneira atual, senão usa a antiga
         val hostingType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("EXTRA_HOSTING", HostingType::class.java)
         } else {
@@ -44,6 +45,7 @@ class TripSummaryActivity : ComponentActivity() {
             intent.getSerializableExtra("EXTRA_HOSTING") as? HostingType
         }
 
+        //Toast de erro para caso hostingType seja null
         if (hostingType == null) {
             Toast.makeText(
                 this,
@@ -75,6 +77,7 @@ class TripSummaryActivity : ComponentActivity() {
                                 Intent(this@TripSummaryActivity, TripDataActivity::class.java).apply {
                                     flags =
                                         Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    //Flags para limpar a pilha de intents e não recriar a primeira
                                 }
 
                             startActivity(intent)
