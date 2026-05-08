@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Button
@@ -29,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -81,11 +85,46 @@ fun TripOptionsScreen(
 
     Column(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         //Cria spacer para melhor visualização
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+
+        //Modo econômico
+        var economicMode by rememberSaveable { mutableStateOf(false) }
+
+        Column(
+            modifier = Modifier.width(250.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Ativar modo econômico",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                    .fillMaxWidth()
+                    .toggleable(
+                        value = economicMode,
+                        onValueChange = { checked ->
+                            economicMode = checked
+                        }
+                    )
+                    .padding(vertical = 10.dp)
+            ) {
+                Checkbox(
+                    checked = economicMode,
+                    onCheckedChange = null,
+                    Modifier.padding(10.dp)
+                )
+
+                Text(text = "Modo Econômico", fontSize = 20.sp)
+            }
+        }
 
         Column(
             modifier = Modifier.width(250.dp),
@@ -109,7 +148,7 @@ fun TripOptionsScreen(
                             //Faz texto do radio button ser clicável
                             selected = selectedHostingType == hostingType,
                             onClick = {
-                                selectedHostingType = hostingType
+                                selectedHostingType = if (economicMode) null else hostingType
                             },
                             role = Role.RadioButton
                         )
@@ -210,7 +249,7 @@ fun TripOptionsScreen(
                         //Faz texto do checkbox ser clicável
                         value = tourGuideIncluded,
                         onValueChange = { checked ->
-                            tourGuideIncluded = checked
+                            tourGuideIncluded = if (economicMode) false else checked
                         },
                         role = Role.Checkbox
                     )
@@ -227,7 +266,12 @@ fun TripOptionsScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        if (economicMode) {
+            selectedHostingType = HostingType.ECONOMIC
+            tourGuideIncluded = false
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(onClick = onBackClick, modifier = Modifier.padding(horizontal = 10.dp)) {
